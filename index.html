@@ -1,0 +1,1034 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Computer Organization – Quiz Prep</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Syne:wght@400;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0a0e1a;
+    --surface: #111827;
+    --border: #1e2d45;
+    --accent: #00d4ff;
+    --accent2: #7c3aed;
+    --green: #10b981;
+    --red: #ef4444;
+    --yellow: #f59e0b;
+    --text: #e2e8f0;
+    --muted: #64748b;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Syne', sans-serif;
+    min-height: 100vh;
+  }
+
+  /* Header */
+  .header {
+    background: linear-gradient(135deg, #0d1b35 0%, #1a0a2e 100%);
+    border-bottom: 1px solid var(--border);
+    padding: 28px 40px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 16px;
+  }
+  .header-left h1 {
+    font-size: 1.6rem;
+    font-weight: 800;
+    color: var(--accent);
+    letter-spacing: -0.5px;
+  }
+  .header-left p {
+    color: var(--muted);
+    font-size: 0.85rem;
+    font-family: 'Space Mono', monospace;
+    margin-top: 4px;
+  }
+  .score-badge {
+    background: var(--surface);
+    border: 1px solid var(--accent);
+    border-radius: 12px;
+    padding: 10px 20px;
+    font-family: 'Space Mono', monospace;
+    font-size: 0.9rem;
+    color: var(--accent);
+  }
+
+  /* Tabs */
+  .tabs {
+    display: flex;
+    gap: 4px;
+    padding: 20px 40px 0;
+    border-bottom: 1px solid var(--border);
+    overflow-x: auto;
+  }
+  .tab {
+    padding: 10px 22px;
+    border-radius: 8px 8px 0 0;
+    cursor: pointer;
+    font-weight: 700;
+    font-size: 0.85rem;
+    border: none;
+    background: transparent;
+    color: var(--muted);
+    transition: all 0.2s;
+    white-space: nowrap;
+  }
+  .tab:hover { color: var(--text); }
+  .tab.active {
+    background: var(--surface);
+    color: var(--accent);
+    border: 1px solid var(--border);
+    border-bottom: 1px solid var(--surface);
+    margin-bottom: -1px;
+  }
+
+  /* Main */
+  .main { padding: 32px 40px; max-width: 1100px; margin: 0 auto; }
+
+  /* Section */
+  .section { display: none; }
+  .section.active { display: block; }
+
+  /* Cheat Sheet */
+  .topic-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; }
+  .topic-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 24px;
+    position: relative;
+    overflow: hidden;
+  }
+  .topic-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0;
+    width: 4px;
+    height: 100%;
+  }
+  .topic-card.blue::before { background: var(--accent); }
+  .topic-card.purple::before { background: var(--accent2); }
+  .topic-card.green::before { background: var(--green); }
+  .topic-card.yellow::before { background: var(--yellow); }
+  .topic-card h3 {
+    font-size: 0.95rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 14px;
+    color: var(--accent);
+  }
+  .topic-card.purple h3 { color: #a78bfa; }
+  .topic-card.green h3 { color: var(--green); }
+  .topic-card.yellow h3 { color: var(--yellow); }
+  .topic-card ul { list-style: none; }
+  .topic-card li {
+    padding: 6px 0;
+    font-size: 0.88rem;
+    border-bottom: 1px solid #1e2d4530;
+    line-height: 1.5;
+  }
+  .topic-card li:last-child { border-bottom: none; }
+  .topic-card li strong { color: var(--text); }
+  .topic-card li span { color: var(--muted); font-size: 0.82rem; }
+  .compare-table { width: 100%; border-collapse: collapse; font-size: 0.85rem; }
+  .compare-table th {
+    background: #1a2744;
+    padding: 10px 14px;
+    text-align: left;
+    font-weight: 700;
+    color: var(--accent);
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+  .compare-table td {
+    padding: 10px 14px;
+    border-bottom: 1px solid var(--border);
+    vertical-align: top;
+    line-height: 1.5;
+    color: #cbd5e1;
+    font-size: 0.85rem;
+  }
+  .compare-table tr:last-child td { border-bottom: none; }
+  .compare-table tr:nth-child(even) td { background: #0f1929; }
+
+  /* Section header */
+  .section-title {
+    font-size: 1.2rem;
+    font-weight: 800;
+    color: var(--text);
+    margin-bottom: 20px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid var(--border);
+  }
+  .section-title span {
+    color: var(--accent);
+    font-family: 'Space Mono', monospace;
+    font-size: 0.85rem;
+    font-weight: 400;
+    margin-left: 10px;
+  }
+
+  /* Quiz */
+  .quiz-controls {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 28px;
+    flex-wrap: wrap;
+    align-items: center;
+  }
+  .btn {
+    padding: 10px 22px;
+    border-radius: 8px;
+    font-family: 'Syne', sans-serif;
+    font-weight: 700;
+    font-size: 0.85rem;
+    cursor: pointer;
+    border: none;
+    transition: all 0.2s;
+  }
+  .btn-primary {
+    background: var(--accent);
+    color: #000;
+  }
+  .btn-primary:hover { background: #00b8e6; }
+  .btn-secondary {
+    background: var(--surface);
+    color: var(--text);
+    border: 1px solid var(--border);
+  }
+  .btn-secondary:hover { border-color: var(--accent); color: var(--accent); }
+  .btn-success {
+    background: var(--green);
+    color: #000;
+  }
+
+  .progress-bar {
+    height: 4px;
+    background: var(--border);
+    border-radius: 4px;
+    margin-bottom: 28px;
+    overflow: hidden;
+  }
+  .progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--accent), var(--accent2));
+    border-radius: 4px;
+    transition: width 0.4s ease;
+  }
+
+  .question-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 28px;
+    margin-bottom: 20px;
+  }
+  .question-meta {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 14px;
+    align-items: center;
+  }
+  .q-tag {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.72rem;
+    padding: 3px 10px;
+    border-radius: 20px;
+    background: #1a2744;
+    color: var(--accent);
+  }
+  .q-tag.purple { background: #1a0a2e; color: #a78bfa; }
+  .q-tag.green { background: #0a2420; color: var(--green); }
+  .q-num {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.75rem;
+    color: var(--muted);
+  }
+  .question-text {
+    font-size: 1.05rem;
+    font-weight: 700;
+    margin-bottom: 20px;
+    line-height: 1.5;
+  }
+  .options { display: flex; flex-direction: column; gap: 10px; }
+  .option {
+    padding: 14px 18px;
+    border-radius: 10px;
+    border: 1px solid var(--border);
+    cursor: pointer;
+    transition: all 0.18s;
+    font-size: 0.9rem;
+    line-height: 1.4;
+    background: #0d1625;
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+  }
+  .option:hover:not(.answered) { border-color: var(--accent); background: #0d2035; }
+  .option.correct { border-color: var(--green); background: #0a2420; color: var(--green); }
+  .option.wrong { border-color: var(--red); background: #2a0a0a; color: var(--red); }
+  .option.reveal { border-color: var(--green); background: #0a2420; color: var(--green); }
+  .option-letter {
+    width: 24px;
+    height: 24px;
+    min-width: 24px;
+    border-radius: 6px;
+    background: var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Space Mono', monospace;
+    font-size: 0.75rem;
+    font-weight: 700;
+  }
+  .option.correct .option-letter { background: var(--green); color: #000; }
+  .option.wrong .option-letter { background: var(--red); color: #fff; }
+  .option.reveal .option-letter { background: var(--green); color: #000; }
+
+  .explanation {
+    margin-top: 16px;
+    padding: 14px 18px;
+    background: #0a1830;
+    border-left: 3px solid var(--accent);
+    border-radius: 0 8px 8px 0;
+    font-size: 0.88rem;
+    line-height: 1.6;
+    color: #94a3b8;
+    display: none;
+  }
+  .explanation.show { display: block; }
+  .explanation strong { color: var(--accent); }
+
+  .quiz-summary {
+    text-align: center;
+    padding: 48px 24px;
+  }
+  .summary-score {
+    font-size: 5rem;
+    font-weight: 800;
+    color: var(--accent);
+    font-family: 'Space Mono', monospace;
+    line-height: 1;
+    margin-bottom: 12px;
+  }
+  .summary-label {
+    font-size: 1.1rem;
+    color: var(--muted);
+    margin-bottom: 32px;
+  }
+  .summary-breakdown {
+    display: flex;
+    justify-content: center;
+    gap: 32px;
+    margin-bottom: 32px;
+    flex-wrap: wrap;
+  }
+  .breakdown-item { text-align: center; }
+  .breakdown-num { font-size: 2rem; font-weight: 800; font-family: 'Space Mono', monospace; }
+  .breakdown-label { font-size: 0.78rem; color: var(--muted); text-transform: uppercase; letter-spacing: 1px; }
+
+  /* Flashcards */
+  .flashcard-container { perspective: 1000px; }
+  .flashcard-nav { display: flex; align-items: center; justify-content: center; gap: 20px; margin-bottom: 28px; flex-wrap: wrap; }
+  .flashcard-counter { font-family: 'Space Mono', monospace; font-size: 0.9rem; color: var(--muted); }
+  .flashcard {
+    width: 100%;
+    max-width: 680px;
+    height: 280px;
+    margin: 0 auto 28px;
+    cursor: pointer;
+    perspective: 1000px;
+  }
+  .flashcard-inner {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+    transform-style: preserve-3d;
+  }
+  .flashcard.flipped .flashcard-inner { transform: rotateY(180deg); }
+  .flashcard-front, .flashcard-back {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    backface-visibility: hidden;
+    border-radius: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 36px;
+    text-align: center;
+  }
+  .flashcard-front {
+    background: linear-gradient(135deg, #0d1b35, #1a0a2e);
+    border: 1px solid var(--border);
+  }
+  .flashcard-back {
+    background: linear-gradient(135deg, #0a2420, #0d1b35);
+    border: 1px solid var(--green);
+    transform: rotateY(180deg);
+  }
+  .flashcard-front .card-label {
+    font-size: 0.72rem;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    color: var(--accent);
+    font-family: 'Space Mono', monospace;
+    margin-bottom: 20px;
+  }
+  .flashcard-back .card-label {
+    font-size: 0.72rem;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    color: var(--green);
+    font-family: 'Space Mono', monospace;
+    margin-bottom: 20px;
+  }
+  .flashcard-front .card-text { font-size: 1.1rem; font-weight: 700; line-height: 1.5; }
+  .flashcard-back .card-text { font-size: 0.95rem; line-height: 1.6; color: #a7f3d0; }
+  .flashcard-hint { text-align: center; font-size: 0.78rem; color: var(--muted); margin-bottom: 28px; font-family: 'Space Mono', monospace; }
+  .fc-category-filters { display: flex; gap: 8px; flex-wrap: wrap; justify-content: center; margin-bottom: 24px; }
+  .fc-filter {
+    padding: 6px 14px;
+    border-radius: 20px;
+    border: 1px solid var(--border);
+    background: transparent;
+    color: var(--muted);
+    cursor: pointer;
+    font-size: 0.78rem;
+    font-family: 'Syne', sans-serif;
+    font-weight: 700;
+    transition: all 0.2s;
+  }
+  .fc-filter.active { border-color: var(--accent); color: var(--accent); background: #0d2035; }
+
+  /* Timeline */
+  .timeline { position: relative; padding-left: 32px; }
+  .timeline::before {
+    content: '';
+    position: absolute;
+    left: 8px; top: 0; bottom: 0;
+    width: 2px;
+    background: linear-gradient(to bottom, var(--accent), var(--accent2), var(--green));
+  }
+  .timeline-item {
+    position: relative;
+    margin-bottom: 24px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 18px 20px;
+  }
+  .timeline-item::before {
+    content: '';
+    position: absolute;
+    left: -28px;
+    top: 22px;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: var(--accent);
+    border: 2px solid var(--bg);
+  }
+  .timeline-year {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.78rem;
+    color: var(--accent);
+    margin-bottom: 6px;
+    font-weight: 700;
+  }
+  .timeline-title { font-weight: 800; font-size: 0.95rem; margin-bottom: 6px; }
+  .timeline-desc { font-size: 0.84rem; color: #94a3b8; line-height: 1.5; }
+
+  @media (max-width: 600px) {
+    .main { padding: 20px 16px; }
+    .header { padding: 20px 16px; }
+    .tabs { padding: 16px 16px 0; }
+    .flashcard { height: 240px; }
+    .summary-score { font-size: 3.5rem; }
+  }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-left">
+    <h1>⚡ CO&A Quiz Prep</h1>
+    <p>Computer Organization & Architecture · Ch 01 + Ch 02</p>
+  </div>
+  <div class="score-badge" id="scoreBadge">Score: — / —</div>
+</div>
+
+<div class="tabs">
+  <button class="tab active" onclick="showSection('cheatsheet')">📋 Cheat Sheet</button>
+  <button class="tab" onclick="showSection('flashcards')">🃏 Flashcards</button>
+  <button class="tab" onclick="showSection('quiz')">🧠 Quiz</button>
+  <button class="tab" onclick="showSection('timeline')">📅 History</button>
+</div>
+
+<div class="main">
+
+  <!-- CHEAT SHEET -->
+  <div class="section active" id="cheatsheet">
+    <p class="section-title">Key Concepts at a Glance <span>quick review</span></p>
+
+    <div class="topic-grid">
+      <div class="topic-card blue">
+        <h3>Architecture vs Organization</h3>
+        <table class="compare-table" style="margin-top:8px;">
+          <tr><th>Architecture</th><th>Organization</th></tr>
+          <tr><td>Visible to programmer</td><td>Transparent to programmer</td></tr>
+          <tr><td>Instruction set, data types, addressing</td><td>Control signals, interfaces, memory tech</td></tr>
+          <tr><td>"What to do?"</td><td>"How to do?"</td></tr>
+          <tr><td>Abstract / high-level</td><td>Implementation detail</td></tr>
+          <tr><td>Same for Intel & AMD x86</td><td>Different for Intel & AMD</td></tr>
+        </table>
+      </div>
+
+      <div class="topic-card purple">
+        <h3>4 Functions of a Computer</h3>
+        <ul>
+          <li><strong>Data Processing</strong> <span>– Transforming data into meaningful info</span></li>
+          <li><strong>Data Storage</strong> <span>– Files stored for retrieval/update</span></li>
+          <li><strong>Data Movement</strong> <span>– I/O to/from peripherals; data comm</span></li>
+          <li><strong>Control</strong> <span>– Control unit manages all three above</span></li>
+        </ul>
+      </div>
+
+      <div class="topic-card green">
+        <h3>Computer Structure (Top-Level)</h3>
+        <ul>
+          <li><strong>CPU</strong> <span>– Controls operations, processes data</span></li>
+          <li><strong>Main Memory</strong> <span>– Stores programs & data at runtime</span></li>
+          <li><strong>I/O</strong> <span>– Moves data to/from external environment</span></li>
+          <li><strong>System Interconnect</strong> <span>– System bus connecting above three</span></li>
+        </ul>
+      </div>
+
+      <div class="topic-card yellow">
+        <h3>CPU Structure</h3>
+        <ul>
+          <li><strong>Control Unit (CU)</strong> <span>– Interprets instructions, sends signals</span></li>
+          <li><strong>ALU</strong> <span>– Performs arithmetic & logic operations</span></li>
+          <li><strong>Registers</strong> <span>– Internal CPU storage</span></li>
+          <li><strong>Internal Bus</strong> <span>– Connects CU, ALU, Registers</span></li>
+        </ul>
+      </div>
+
+      <div class="topic-card blue">
+        <h3>IAS Registers – ALU</h3>
+        <ul>
+          <li><strong>MBR</strong> <span>– Memory Buffer Register: holds 40-bit word to/from memory</span></li>
+          <li><strong>AC</strong> <span>– Accumulator: holds MSBs of ALU result</span></li>
+          <li><strong>MQ</strong> <span>– Multiplier Quotient: holds LSBs of result</span></li>
+        </ul>
+      </div>
+
+      <div class="topic-card purple">
+        <h3>IAS Registers – Control Unit</h3>
+        <ul>
+          <li><strong>MAR</strong> <span>– Memory Address Register: 12-bit memory address</span></li>
+          <li><strong>IR</strong> <span>– Instruction Register: 8-bit opcode</span></li>
+          <li><strong>IBR</strong> <span>– Instruction Buffer Register: holds right-hand instruction</span></li>
+          <li><strong>PC</strong> <span>– Program Counter: address of next instruction pair</span></li>
+        </ul>
+      </div>
+
+      <div class="topic-card green">
+        <h3>Instruction Cycle</h3>
+        <ul>
+          <li><strong>Fetch Cycle</strong> <span>– PC → MAR → fetch word → MBR → IBR/IR; opcode to IR, address to MAR</span></li>
+          <li><strong>Execute Cycle</strong> <span>– Control circuit interprets opcode, sends signals to perform operation</span></li>
+          <li><strong>IAS Instruction Types</strong> <span>– Data transfer, Unconditional branch, Conditional branch, Arithmetic, Address modify</span></li>
+        </ul>
+      </div>
+
+      <div class="topic-card yellow">
+        <h3>Computer Generations</h3>
+        <ul>
+          <li><strong>1st Gen</strong> <span>– Vacuum tubes (ENIAC, UNIVAC)</span></li>
+          <li><strong>2nd Gen</strong> <span>– Transistors (smaller, cheaper, less heat)</span></li>
+          <li><strong>3rd Gen</strong> <span>– Integrated Circuits / ICs (1958)</span></li>
+          <li><strong>4th Gen</strong> <span>– Microprocessors (1971–Intel 4004)</span></li>
+          <li><strong>5th Gen</strong> <span>– AI / parallel computing</span></li>
+        </ul>
+      </div>
+
+      <div class="topic-card blue">
+        <h3>Moore's Law</h3>
+        <ul>
+          <li><strong>Observation (1965)</strong> <span>– Transistor count doubles every 12 months (later slowed to 18 months)</span></li>
+          <li><strong>Consequence 1</strong> <span>– Cost per chip stays almost constant</span></li>
+          <li><strong>Consequence 2</strong> <span>– Closer components → shorter paths → higher speed</span></li>
+          <li><strong>Consequence 3</strong> <span>– Less power/heat dissipation</span></li>
+          <li><strong>Consequence 4</strong> <span>– More reliable interconnections</span></li>
+        </ul>
+      </div>
+
+      <div class="topic-card purple">
+        <h3>Performance Balance</h3>
+        <ul>
+          <li><strong>Problem</strong> <span>– Memory speed lags behind processor speed → processor stalls</span></li>
+          <li><strong>Memory Solutions</strong> <span>– Wider DRAMs, cache buffer, more cache on chip, higher-speed buses</span></li>
+          <li><strong>I/O Solutions</strong> <span>– Cache/buffer schemes, high-speed interconnect buses, multiple processors</span></li>
+        </ul>
+      </div>
+
+      <div class="topic-card green">
+        <h3>Processor Speed Techniques</h3>
+        <ul>
+          <li><strong>Pipelining</strong> <span>– Overlap instruction stages (fetch→decode→execute)</span></li>
+          <li><strong>Branch Prediction</strong> <span>– Predict next branch to preload instructions</span></li>
+          <li><strong>Data Flow Analysis</strong> <span>– Identify dependencies to avoid delays</span></li>
+          <li><strong>Speculative Execution</strong> <span>– Execute ahead speculatively, hold results</span></li>
+          <li><strong>Superscalar</strong> <span>– Multiple instructions execute per clock cycle</span></li>
+        </ul>
+      </div>
+
+      <div class="topic-card yellow">
+        <h3>MIPS & CPI Formulas</h3>
+        <ul>
+          <li><strong>T = IC × CPI × τ</strong> <span>– Processor time (IC=instruction count, τ=cycle time)</span></li>
+          <li><strong>CPI = Σ(CPIᵢ × Iᵢ/IC)</strong> <span>– Average cycles per instruction</span></li>
+          <li><strong>MIPS = f / (CPI × 10⁶)</strong> <span>– Instructions per second in millions</span></li>
+          <li><strong>Clock Rate</strong> <span>– Alone doesn't indicate performance; compare within same architecture</span></li>
+        </ul>
+      </div>
+
+      <div class="topic-card blue">
+        <h3>Multicore Processors</h3>
+        <ul>
+          <li><strong>Definition</strong> <span>– Multiple processors on single chip with shared cache</span></li>
+          <li><strong>Benefit</strong> <span>– Doubling cores ≈ doubles performance (with software support)</span></li>
+          <li><strong>Hyper-threading</strong> <span>– Single core appears as 2 to OS</span></li>
+          <li><strong>Turbo Boost</strong> <span>– Cores automatically run faster than base frequency</span></li>
+          <li><strong>Multi-threading</strong> <span>– OS utilises multiple cores for application threads</span></li>
+        </ul>
+      </div>
+
+      <div class="topic-card purple">
+        <h3>32-bit vs 64-bit</h3>
+        <ul>
+          <li><strong>32-bit</strong> <span>– Max 4GB RAM (2³² bytes), 32-bit registers/buses</span></li>
+          <li><strong>64-bit</strong> <span>– Handles much larger RAM; needed for CAD, DB, servers</span></li>
+          <li><strong>Compatibility</strong> <span>– 32-bit software runs on 64-bit OS via emulator</span></li>
+        </ul>
+      </div>
+
+      <div class="topic-card green">
+        <h3>Von Neumann / IAS Machine</h3>
+        <ul>
+          <li><strong>Stored-program concept</strong> <span>– Instructions and data in same memory</span></li>
+          <li><strong>Memory</strong> <span>– 4096 words × 40 bits each</span></li>
+          <li><strong>Instruction format</strong> <span>– Two 20-bit instructions per word; 8-bit opcode + 12-bit address</span></li>
+          <li><strong>Harvard vs Von Neumann</strong> <span>– Harvard uses separate buses for instructions & data → faster</span></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- FLASHCARDS -->
+  <div class="section" id="flashcards">
+    <p class="section-title">Flashcards <span>click card to flip</span></p>
+
+    <div class="fc-category-filters">
+      <button class="fc-filter active" onclick="filterCards('all')">All</button>
+      <button class="fc-filter" onclick="filterCards('ch1')">Ch 01</button>
+      <button class="fc-filter" onclick="filterCards('ch2')">Ch 02</button>
+      <button class="fc-filter" onclick="filterCards('calc')">Calculations</button>
+    </div>
+
+    <div class="flashcard-nav">
+      <button class="btn btn-secondary" onclick="prevCard()">← Prev</button>
+      <span class="flashcard-counter" id="fcCounter">1 / 20</span>
+      <button class="btn btn-secondary" onclick="nextCard()">Next →</button>
+      <button class="btn btn-primary" onclick="shuffleCards()">🔀 Shuffle</button>
+    </div>
+
+    <div class="flashcard" id="flashcard" onclick="flipCard()">
+      <div class="flashcard-inner" id="flashcardInner">
+        <div class="flashcard-front">
+          <div class="card-label">QUESTION</div>
+          <div class="card-text" id="fcQuestion">Loading...</div>
+        </div>
+        <div class="flashcard-back">
+          <div class="card-label">ANSWER</div>
+          <div class="card-text" id="fcAnswer">Loading...</div>
+        </div>
+      </div>
+    </div>
+    <div class="flashcard-hint">👆 Click the card to reveal the answer</div>
+  </div>
+
+  <!-- QUIZ -->
+  <div class="section" id="quiz">
+    <div id="quizStart">
+      <p class="section-title">Practice Quiz <span>30 questions from all 3 lectures</span></p>
+      <div class="quiz-controls">
+        <button class="btn btn-primary" onclick="startQuiz('all')">Start Full Quiz (30 Q)</button>
+        <button class="btn btn-secondary" onclick="startQuiz('ch1')">Ch 01 Only</button>
+        <button class="btn btn-secondary" onclick="startQuiz('ch2')">Ch 02 Only</button>
+      </div>
+    </div>
+
+    <div id="quizActive" style="display:none;">
+      <div class="progress-bar"><div class="progress-fill" id="progressFill" style="width:0%"></div></div>
+      <div id="questionsContainer"></div>
+      <div style="text-align:center; margin-top: 20px;">
+        <button class="btn btn-success" onclick="submitQuiz()" id="submitBtn">Submit Quiz</button>
+      </div>
+    </div>
+
+    <div id="quizResult" style="display:none;">
+      <div class="quiz-summary">
+        <div class="summary-score" id="resultScore">0%</div>
+        <div class="summary-label" id="resultLabel">—</div>
+        <div class="summary-breakdown">
+          <div class="breakdown-item">
+            <div class="breakdown-num" id="resCorrect" style="color:var(--green)">0</div>
+            <div class="breakdown-label">Correct</div>
+          </div>
+          <div class="breakdown-item">
+            <div class="breakdown-num" id="resWrong" style="color:var(--red)">0</div>
+            <div class="breakdown-label">Wrong</div>
+          </div>
+          <div class="breakdown-item">
+            <div class="breakdown-num" id="resTotal" style="color:var(--accent)">0</div>
+            <div class="breakdown-label">Total</div>
+          </div>
+        </div>
+        <button class="btn btn-primary" onclick="restartQuiz()">Try Again</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- TIMELINE -->
+  <div class="section" id="timeline">
+    <p class="section-title">Computer History Timeline <span>chapter 02 key milestones</span></p>
+    <div class="timeline" id="timelineContainer"></div>
+  </div>
+
+</div>
+
+<script>
+// ========== DATA ==========
+
+const flashcardsData = [
+  // CH1
+  { q: "What is Computer Architecture?", a: "Attributes visible to a machine-language programmer: instruction set, data types, I/O mechanisms, addressing. It is the interface between hardware and software. 'What to do?'", cat: "ch1" },
+  { q: "What is Computer Organization?", a: "Operational units and their interconnections that realize architectural specs. Transparent to programmers: control signals, interfaces, memory technology. 'How to do?'", cat: "ch1" },
+  { q: "Give an example that distinguishes Architecture from Organization.", a: "Whether a computer has a multiply instruction → ARCHITECTURE. Whether it uses a dedicated multiply unit or repeated additions → ORGANIZATION (implementation detail).", cat: "ch1" },
+  { q: "Why do Intel and AMD x86 processors run the same programs at different speeds?", a: "Same architecture (x86 instruction set) → programs are compatible. Different organization (different implementation) → different performance.", cat: "ch1" },
+  { q: "List the 4 basic functions of a computer.", a: "1) Data Processing – transforming data into meaningful info.\n2) Data Storage – storing files for retrieval.\n3) Data Movement – I/O with peripherals.\n4) Control – Control Unit manages all three.", cat: "ch1" },
+  { q: "What are the 4 main structural components of a computer?", a: "1) CPU (processes & controls)\n2) Main Memory (stores programs & data)\n3) I/O (transfers data to/from environment)\n4) System Interconnect / System Bus", cat: "ch1" },
+  { q: "What are the 4 structural components of a CPU?", a: "1) Control Unit – interprets instructions\n2) ALU – arithmetic & logic operations\n3) Registers – internal CPU storage\n4) Internal Bus – connects the above three", cat: "ch1" },
+  { q: "What does a 32-bit architecture imply?", a: "Registers, address buses, and data buses are 32 bits wide. Maximum addressable memory = 4 GB (2³² bytes).", cat: "ch1" },
+  { q: "What is a multicore processor?", a: "Multiple processing cores on a single chip. Each core has its own control unit, ALU, registers, and cache. A quad-core has 4 cores; octa-core has 8.", cat: "ch1" },
+  { q: "What is the role of the Control Unit?", a: "Manages the computer's resources and orchestrates the CPU's functional parts. Generates control signals telling memory, ALU, and I/O how to respond to instructions.", cat: "ch1" },
+  // CH2
+  { q: "What was ENIAC?", a: "Electronic Numerical Integrator And Calculator. First general-purpose electronic computer (1943–1946). Used 18,000 vacuum tubes, weighed 30 tons, consumed 140kW. Programmed manually by switches.", cat: "ch2" },
+  { q: "What is the stored-program concept (Von Neumann)?", a: "Instructions and data are stored in the same memory. The CPU fetches instructions from memory and executes them sequentially. This allows programs to be modified by altering memory values.", cat: "ch2" },
+  { q: "What are the 4 components of the IAS computer?", a: "1) Main Memory\n2) ALU (Arithmetic & Logic Unit)\n3) Control Unit\n4) Input/Output (I/O)", cat: "ch2" },
+  { q: "Describe the IAS memory format.", a: "4096 words × 40 bits each. Each word holds two 20-bit instructions. Each instruction = 8-bit opcode + 12-bit address. Numbers use 1 sign bit + 39-bit value.", cat: "ch2" },
+  { q: "What is the Fetch-Decode-Execute cycle?", a: "Fetch: CPU reads instruction from memory (PC → MAR → MBR → IR). Decode: Control unit interprets the opcode. Execute: Control signals cause the ALU or memory operation to occur.", cat: "ch2" },
+  { q: "State Moore's Law and its key consequences.", a: "Transistor count doubles every ~18 months. Consequences: Cost stays constant, speed increases (shorter paths), size decreases, power/heat reduces, reliability improves.", cat: "ch2" },
+  { q: "What are the 3 hardware approaches to increasing processor speed?", a: "1) Shrink logic gates → faster signal propagation.\n2) Increase cache size/speed (dedicate part of chip to cache).\n3) Change processor organization: multi-core, multiple ALUs for parallel processing.", cat: "ch2" },
+  { q: "What are the 4 organizational techniques to improve processor speed?", a: "1) Pipelining – overlap instruction stages.\n2) Branch Prediction – prefetch likely next instructions.\n3) Data Flow Analysis – identify dependencies, avoid delays.\n4) Speculative Execution – execute ahead of time speculatively.", cat: "ch2" },
+  { q: "Why can't you compare clock speeds across different CPU architectures?", a: "Different architectures do different amounts of work per clock cycle. E.g., a 2GHz CPU taking 2 cycles per ADD = same speed as a 1GHz CPU taking 1 cycle. Pipelining also affects instructions per second.", cat: "ch2" },
+  { q: "What is MIPS Rate?", a: "Millions of Instructions Per Second. MIPS = f / (CPI × 10⁶). Depends on clock frequency f and average CPI. Used to compare processor speed, but varies with instruction set and compiler.", cat: "ch2" },
+  { q: "What are the problems with increasing clock speed and logic density?", a: "1) Power: Higher density → more heat (watts/cm²).\n2) RC Delay: Thinner/closer wires → increased resistance/capacitance.\n3) Memory Latency: Memory speed doesn't keep up with processor.", cat: "ch2" },
+  { q: "What is 'Performance Balance'?", a: "Adjusting architecture/organization to compensate for mismatches between processor, memory, and I/O speeds. Problem: memory speed lags CPU → processor stalls in wait states.", cat: "ch2" },
+  { q: "What is the difference between Von Neumann and Harvard architecture?", a: "Von Neumann: Shared bus for instructions and data → CPU can't fetch instruction and read data simultaneously. Harvard: Separate buses → both operations can happen at the same time → faster.", cat: "ch2" },
+  { q: "What is hyper-threading vs. turbo boost?", a: "Hyper-threading: One physical core appears as 2 logical processors to the OS, enabling parallelism. Turbo Boost: Technology allowing cores to automatically run faster than base clock frequency when needed.", cat: "ch2" },
+  // CALC
+  { q: "Formula: Processor Execution Time", a: "T = IC × CPI × τ\nWhere: IC = Instruction Count, CPI = Avg Cycles Per Instruction, τ = Clock Cycle Time (τ = 1/f)", cat: "calc" },
+  { q: "Formula: Average CPI", a: "CPI = Σ (CPIᵢ × Iᵢ/IC)\nFor each instruction type i, multiply its CPI by its fraction of total instructions, then sum all.", cat: "calc" },
+  { q: "Formula: MIPS Rate", a: "MIPS = f / (CPI × 10⁶)\nWhere f = clock frequency in Hz.\nAlternatively: MIPS = IC / (T × 10⁶)", cat: "calc" },
+  { q: "Example: 400MHz processor, CPI=2.24. What is MIPS?", a: "MIPS = f / (CPI × 10⁶)\n= 400×10⁶ / (2.24 × 10⁶)\n≈ 178 MIPS", cat: "calc" },
+  { q: "How is CPI calculated for mixed instruction types?", a: "CPI = Σ(fraction_i × CPI_i)\nE.g., 60% type A (CPI=1) + 20% type B (CPI=2) + 20% type C (CPI=3):\nCPI = 0.6×1 + 0.2×2 + 0.2×3 = 0.6+0.4+0.6 = 1.6", cat: "calc" },
+];
+
+const quizQuestions = [
+  // CH1
+  { q: "What does Computer Architecture deal with?", opts: ["Control signals and memory technology", "Instruction set, data types, and addressing modes", "Physical circuit design and adders", "Clock speed and bus width"], ans: 1, exp: "Architecture refers to attributes visible to a programmer: instruction set, data types, I/O mechanisms, and addressing. Organization deals with implementation details like control signals.", cat: "ch1" },
+  { q: "Which of the following is an ORGANIZATIONAL attribute?", opts: ["The instruction set of a CPU", "The number of bits used for integer representation", "Control signals sent to memory and ALU", "Whether the CPU has a multiply instruction"], ans: 2, exp: "Control signals are transparent to programmers — they are an organizational detail. The instruction set and data type widths are architectural attributes.", cat: "ch1" },
+  { q: "Intel and AMD x86 processors can run the same programs because:", opts: ["They have the same organization", "They have the same clock speed", "They have the same architecture (x86 instruction set)", "They are made by the same company"], ans: 2, exp: "Architecture defines the instruction set — programs compiled for x86 run on both Intel and AMD. However, their organization (implementation) differs, which is why performance varies.", cat: "ch1" },
+  { q: "Which component of the CPU performs arithmetic and logic operations?", opts: ["Control Unit", "Registers", "ALU", "System Bus"], ans: 2, exp: "The Arithmetic and Logic Unit (ALU) performs all arithmetic (add, subtract, etc.) and logical (AND, OR, etc.) operations.", cat: "ch1" },
+  { q: "What is the maximum RAM addressable by a 32-bit system?", opts: ["2 GB", "4 GB", "8 GB", "16 GB"], ans: 1, exp: "A 32-bit system can address 2³² = 4,294,967,296 bytes = 4 GB of memory.", cat: "ch1" },
+  { q: "The System Bus connects:", opts: ["Only CPU and Memory", "CPU, Main Memory, and I/O", "Only ALU and Registers", "Only I/O devices"], ans: 1, exp: "The system interconnect (system bus) provides communication among CPU, main memory, and I/O.", cat: "ch1" },
+  { q: "What is the function of the Control Unit?", opts: ["Performs arithmetic calculations", "Stores program instructions permanently", "Controls the operation of the CPU and manages resources", "Converts analog signals to digital"], ans: 2, exp: "The Control Unit interprets instructions from memory and causes them to be executed by generating appropriate control signals.", cat: "ch1" },
+  { q: "Which of the 4 functions of a computer handles communication with peripherals?", opts: ["Data Processing", "Data Storage", "Data Movement", "Control"], ans: 2, exp: "Data Movement refers to I/O — moving data between the computer and external peripherals or remote devices.", cat: "ch1" },
+  // CH2 Part 1
+  { q: "ENIAC used which technology for digital logic?", opts: ["Transistors", "Vacuum Tubes", "Integrated Circuits", "Microprocessors"], ans: 1, exp: "ENIAC (1943–1946) was a first-generation computer that used 18,000 vacuum tubes for its digital logic elements.", cat: "ch2" },
+  { q: "What was the key innovation of Von Neumann's IAS computer?", opts: ["Using vacuum tubes instead of relays", "Stored-program concept: instructions and data in the same memory", "Introduction of the transistor", "First use of the operating system"], ans: 1, exp: "Von Neumann proposed the stored-program concept — instructions are stored in memory alongside data, allowing programs to be set or altered by changing memory values.", cat: "ch2" },
+  { q: "The IAS computer's memory consists of:", opts: ["1024 words × 32 bits", "4096 words × 40 bits", "2048 words × 16 bits", "8192 words × 64 bits"], ans: 1, exp: "The IAS had 4096 storage locations (words), each 40 bits wide. Each word could hold two 20-bit instructions.", cat: "ch2" },
+  { q: "In an IAS instruction, the opcode is:", opts: ["40 bits wide", "20 bits wide", "12 bits wide", "8 bits wide"], ans: 3, exp: "Each IAS instruction is 20 bits: 8-bit opcode (specifying the operation) + 12-bit address (one of 4096 memory locations).", cat: "ch2" },
+  { q: "The Memory Buffer Register (MBR) is used to:", opts: ["Hold the address of next instruction", "Hold the 8-bit opcode being executed", "Hold a 40-bit word being sent to/from memory", "Count program instructions"], ans: 2, exp: "The MBR holds a 40-bit word to be stored in memory or sent to I/O, or a word received from memory or I/O.", cat: "ch2" },
+  { q: "The Program Counter (PC) contains:", opts: ["The current instruction's opcode", "The address of the next instruction pair to fetch", "The result of the last ALU operation", "The address of the last accessed data"], ans: 1, exp: "The PC holds the address of the next instruction pair to be fetched from memory. It controls the sequential execution of a program.", cat: "ch2" },
+  { q: "Moore's Law originally stated that transistor count doubles every:", opts: ["6 months", "12 months (later slowed to 18 months)", "24 months", "36 months"], ans: 1, exp: "Gordon Moore (1965) observed doubling every 12 months. By the 1970s it slowed to doubling every 18 months, which has been sustained since.", cat: "ch2" },
+  { q: "Which generation of computers introduced Integrated Circuits (ICs)?", opts: ["1st Generation", "2nd Generation", "3rd Generation", "4th Generation"], ans: 2, exp: "The 3rd generation (starting 1958) introduced ICs — thousands of transistors on a single silicon chip, replacing discrete transistors on circuit boards.", cat: "ch2" },
+  // CH2 Part 2
+  { q: "What does 'performance balance' refer to?", opts: ["Balancing the number of cores on a chip", "Adjusting architecture to compensate for mismatches between CPU, memory, and I/O speeds", "Making sure all programs run at the same speed", "Ensuring clock speed equals memory speed"], ans: 1, exp: "Performance balance means compensating for the mismatch among components. The main issue is that memory speed lags far behind CPU speed, causing the processor to stall.", cat: "ch2" },
+  { q: "Pipelining improves performance by:", opts: ["Adding more cores to the CPU", "Running multiple programs simultaneously", "Overlapping instruction stages: fetching one while decoding another", "Increasing the clock frequency directly"], ans: 2, exp: "Pipelining overlaps stages of different instructions. While one instruction is executing, the next is being decoded and the one after is being fetched — like an assembly line.", cat: "ch2" },
+  { q: "Why can't you meaningfully compare clock speeds of different CPU families?", opts: ["Different CPUs use different power", "Different architectures do different amounts of work per cycle; pipelining also affects throughput", "Manufacturers lie about clock speeds", "Clock speed is always the same across CPUs"], ans: 1, exp: "A 2GHz CPU taking 2 cycles per instruction = same throughput as a 1GHz CPU taking 1 cycle. Work per cycle differs by architecture, so clock speed alone is misleading.", cat: "ch2" },
+  { q: "What is MIPS?", opts: ["Millions of Instructions Per Second", "Memory Instruction Processing Speed", "Minimum Instruction Pipeline Stages", "Multiple Integrated Processor Systems"], ans: 0, exp: "MIPS = Millions of Instructions Per Second. It measures instruction execution rate. Formula: MIPS = f / (CPI × 10⁶).", cat: "ch2" },
+  { q: "In multicore processors, Level-1 (L1) cache is:", opts: ["Shared among all cores", "Dedicated to each individual core", "Stored in main memory", "Part of the hard drive"], ans: 1, exp: "Each core has its own dedicated L1 cache. Larger caches (L2, L3) are typically shared among cores.", cat: "ch2" },
+  { q: "What is the main advantage of Harvard Architecture over Von Neumann?", opts: ["It uses less memory", "CPU can read an instruction and access data memory simultaneously", "It supports more instruction types", "It requires fewer transistors"], ans: 1, exp: "Harvard Architecture uses separate buses for instructions and data, so the CPU can fetch an instruction and read/write data at the same time — no contention on a shared bus.", cat: "ch2" },
+  { q: "What are the 3 problems associated with increasing clock speed and logic density?", opts: ["Power dissipation, RC delay, Memory latency", "Cost, weight, and temperature", "Voltage, current, and resistance", "Speed, size, and compatibility"], ans: 0, exp: "As clock speed and density increase: (1) Power density increases causing heat issues, (2) RC delay (resistance × capacitance) increases with thinner wires, (3) Memory latency — memory can't keep up with the CPU.", cat: "ch2" },
+  { q: "Intel's first 32-bit microprocessor was the:", opts: ["8086", "8080", "80386", "Pentium"], ans: 2, exp: "The Intel 80386 (1985) was Intel's first 32-bit processor and also supported multitasking.", cat: "ch2" },
+  { q: "Superscalar technology allows:", opts: ["Multiple cores on one chip", "Multiple instructions to execute in parallel within a single processor", "Memory access without cache", "Programs to run without an OS"], ans: 1, exp: "Superscalar processors have multiple execution units and can execute more than one instruction per clock cycle in parallel.", cat: "ch2" },
+  // CALC
+  { q: "A program has IC=2 million instructions on a 400MHz CPU with CPI=2.24. What is the MIPS rate?", opts: ["100 MIPS", "178 MIPS", "256 MIPS", "400 MIPS"], ans: 1, exp: "MIPS = f / (CPI × 10⁶) = (400 × 10⁶) / (2.24 × 10⁶) ≈ 178 MIPS.", cat: "calc" },
+  { q: "If clock frequency f = 1 GHz and CPI = 2, what is the processor execution time for 1 million instructions?", opts: ["1 ms", "2 ms", "0.5 ms", "4 ms"], ans: 1, exp: "T = IC × CPI × τ = 1×10⁶ × 2 × (1/10⁹) = 2×10⁶ / 10⁹ = 0.002 seconds = 2 ms.", cat: "calc" },
+  { q: "An instruction mix has 50% type A (CPI=1), 30% type B (CPI=2), 20% type C (CPI=4). What is average CPI?", opts: ["1.5", "2.1", "1.9", "2.4"], ans: 2, exp: "CPI = (0.5×1) + (0.3×2) + (0.2×4) = 0.5 + 0.6 + 0.8 = 1.9", cat: "calc" },
+  { q: "Clock cycle time τ for a 2 GHz processor is:", opts: ["2 nanoseconds", "0.5 nanoseconds", "1 nanosecond", "10 nanoseconds"], ans: 1, exp: "τ = 1/f = 1/(2×10⁹) = 0.5 × 10⁻⁹ seconds = 0.5 nanoseconds.", cat: "calc" },
+  { q: "Machine A: 2GHz, CPI=1. Machine B: 4GHz, CPI=3. For the same program, which is faster?", opts: ["Machine A", "Machine B", "They are equal", "Cannot determine"], ans: 0, exp: "Time ∝ CPI/f. Machine A: 1/2 = 0.5 (relative). Machine B: 3/4 = 0.75 (relative). Machine A is faster (lower ratio = less time per instruction).", cat: "calc" },
+];
+
+const timelineData = [
+  { year: "1943–1946", title: "ENIAC", desc: "First general-purpose electronic computer. 18,000 vacuum tubes, 30 tons, 140kW. Decimal (not binary). Programmed manually by switches. Developed by Eckert & Mauchly at UPenn." },
+  { year: "1947", title: "Transistor Invented", desc: "William Shockley et al. at Bell Labs. Smaller, cheaper, less heat than vacuum tubes. Solid-state device made from silicon. Launched 2nd generation computers." },
+  { year: "1947–1950", title: "UNIVAC I", desc: "First commercial computer. Used by US Bureau of Census. Introduced backward compatibility — new machines run old software to retain customer base." },
+  { year: "1952", title: "IAS Computer (Von Neumann)", desc: "Stored-program concept: instructions and data in same memory. 4096 × 40-bit words. 8-bit opcode + 12-bit address per instruction. Prototype of all modern computers." },
+  { year: "1953", title: "IBM 701", desc: "IBM's first stored-program computer. Designed for scientific calculations. Led to the IBM 700/7000 series." },
+  { year: "1958", title: "Integrated Circuit (IC) Invented", desc: "The IC revolutionized electronics — thousands of transistors on a single silicon chip. Defined the 3rd generation of computers. Eliminated manual soldering of discrete components." },
+  { year: "1965", title: "Moore's Law", desc: "Gordon Moore predicted transistor count doubles every 12 months (later 18 months). Consequences: cost stays constant, speed increases, size shrinks, power/heat decreases." },
+  { year: "1970", title: "Semiconductor Memory", desc: "Fairchild produced first semiconductor RAM chip — 256 bits. Non-destructive read, 70 billionths of a second per bit. Memory capacity has doubled approximately every year since." },
+  { year: "1971", title: "Intel 4004 – First Microprocessor", desc: "All CPU components on a single chip. 4-bit processor. Beginning of the 4th generation. Followed by 8008 (8-bit, 1972)." },
+  { year: "1974", title: "Intel 8080 & 8086", desc: "8080: First general-purpose microprocessor. 8086: Powerful 16-bit microprocessor with instruction prefetch (cache). 8088 used in first IBM PC." },
+  { year: "1985", title: "Intel 80386", desc: "Intel's first 32-bit processor. Supported multitasking. Beginning of the modern x86 era." },
+  { year: "1993+", title: "Pentium Era", desc: "Pentium: Superscalar — multiple instructions in parallel. Pentium Pro: Branch prediction, data flow analysis, speculative execution. MMX, SSE for multimedia. Pentium 4: Further enhancements." },
+  { year: "2006", title: "Intel Core (Multicore)", desc: "First x86 with dual-core. Core 2: 64-bit architecture. Core 2 Quad: 4 processors on chip. Multicore became the solution to diminishing returns from single-core improvements." },
+];
+
+// ========== STATE ==========
+let currentCards = [...flashcardsData];
+let currentCardIndex = 0;
+let activeFilter = 'all';
+let quizMode = 'all';
+let currentQuiz = [];
+let quizAnswers = {};
+let quizSubmitted = false;
+let totalCorrect = 0;
+let totalAttempted = 0;
+
+// ========== TABS ==========
+function showSection(id) {
+  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  event.target.classList.add('active');
+}
+
+// ========== FLASHCARDS ==========
+function filterCards(cat) {
+  activeFilter = cat;
+  document.querySelectorAll('.fc-filter').forEach(b => b.classList.remove('active'));
+  event.target.classList.add('active');
+  if (cat === 'all') currentCards = [...flashcardsData];
+  else currentCards = flashcardsData.filter(c => c.cat === cat);
+  currentCardIndex = 0;
+  showCard();
+}
+
+function showCard() {
+  const card = currentCards[currentCardIndex];
+  document.getElementById('fcQuestion').textContent = card.q;
+  document.getElementById('fcAnswer').textContent = card.a;
+  document.getElementById('fcCounter').textContent = `${currentCardIndex + 1} / ${currentCards.length}`;
+  document.getElementById('flashcard').classList.remove('flipped');
+}
+
+function flipCard() {
+  document.getElementById('flashcard').classList.toggle('flipped');
+}
+
+function nextCard() {
+  currentCardIndex = (currentCardIndex + 1) % currentCards.length;
+  showCard();
+}
+
+function prevCard() {
+  currentCardIndex = (currentCardIndex - 1 + currentCards.length) % currentCards.length;
+  showCard();
+}
+
+function shuffleCards() {
+  for (let i = currentCards.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [currentCards[i], currentCards[j]] = [currentCards[j], currentCards[i]];
+  }
+  currentCardIndex = 0;
+  showCard();
+}
+
+// ========== QUIZ ==========
+function startQuiz(mode) {
+  quizMode = mode;
+  quizAnswers = {};
+  quizSubmitted = false;
+
+  if (mode === 'all') currentQuiz = [...quizQuestions];
+  else if (mode === 'ch1') currentQuiz = quizQuestions.filter(q => q.cat === 'ch1');
+  else currentQuiz = quizQuestions.filter(q => q.cat === 'ch2' || q.cat === 'calc');
+
+  // Shuffle
+  for (let i = currentQuiz.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [currentQuiz[i], currentQuiz[j]] = [currentQuiz[j], currentQuiz[i]];
+  }
+
+  document.getElementById('quizStart').style.display = 'none';
+  document.getElementById('quizResult').style.display = 'none';
+  document.getElementById('quizActive').style.display = 'block';
+  document.getElementById('progressFill').style.width = '0%';
+  renderQuestions();
+}
+
+function renderQuestions() {
+  const container = document.getElementById('questionsContainer');
+  container.innerHTML = '';
+
+  currentQuiz.forEach((q, qi) => {
+    const labels = ['A', 'B', 'C', 'D'];
+    const tagColor = q.cat === 'ch1' ? '' : q.cat === 'calc' ? 'green' : 'purple';
+    const tagLabel = q.cat === 'ch1' ? 'Ch 01' : q.cat === 'calc' ? 'Calculation' : 'Ch 02';
+
+    const card = document.createElement('div');
+    card.className = 'question-card';
+    card.id = `q${qi}`;
+
+    const opts = q.opts.map((o, oi) => `
+      <div class="option" id="opt${qi}_${oi}" onclick="selectOption(${qi}, ${oi})">
+        <div class="option-letter">${labels[oi]}</div>
+        <div>${o}</div>
+      </div>
+    `).join('');
+
+    card.innerHTML = `
+      <div class="question-meta">
+        <span class="q-tag ${tagColor}">${tagLabel}</span>
+        <span class="q-num">Q${qi + 1} of ${currentQuiz.length}</span>
+      </div>
+      <div class="question-text">${q.q}</div>
+      <div class="options">${opts}</div>
+      <div class="explanation" id="exp${qi}"><strong>💡 Explanation:</strong> ${q.exp}</div>
+    `;
+    container.appendChild(card);
+  });
+}
+
+function selectOption(qi, oi) {
+  if (quizSubmitted) return;
+  quizAnswers[qi] = oi;
+
+  // Update visual
+  for (let i = 0; i < currentQuiz[qi].opts.length; i++) {
+    const el = document.getElementById(`opt${qi}_${i}`);
+    el.classList.remove('correct', 'wrong', 'reveal');
+    if (i === oi) el.style.borderColor = 'var(--accent)';
+    else el.style.borderColor = '';
+  }
+  document.getElementById(`opt${qi}_${oi}`).style.borderColor = 'var(--accent)';
+  document.getElementById(`opt${qi}_${oi}`).style.background = '#0d2035';
+
+  // Update progress
+  const answered = Object.keys(quizAnswers).length;
+  const pct = (answered / currentQuiz.length) * 100;
+  document.getElementById('progressFill').style.width = pct + '%';
+}
+
+function submitQuiz() {
+  if (quizSubmitted) return;
+  quizSubmitted = true;
+  let correct = 0;
+
+  currentQuiz.forEach((q, qi) => {
+    const selected = quizAnswers[qi];
+    const correct_ans = q.ans;
+
+    for (let i = 0; i < q.opts.length; i++) {
+      const el = document.getElementById(`opt${qi}_${i}`);
+      el.style.borderColor = '';
+      el.style.background = '';
+      el.classList.add('answered');
+    }
+
+    if (selected === undefined) {
+      // Not answered — show correct
+      document.getElementById(`opt${qi}_${correct_ans}`).classList.add('reveal');
+    } else if (selected === correct_ans) {
+      document.getElementById(`opt${qi}_${selected}`).classList.add('correct');
+      correct++;
+    } else {
+      document.getElementById(`opt${qi}_${selected}`).classList.add('wrong');
+      document.getElementById(`opt${qi}_${correct_ans}`).classList.add('reveal');
+    }
+
+    document.getElementById(`exp${qi}`).classList.add('show');
+  });
+
+  totalCorrect += correct;
+  totalAttempted += currentQuiz.length;
+  updateScoreBadge();
+
+  // Show result
+  setTimeout(() => {
+    document.getElementById('quizActive').style.display = 'none';
+    document.getElementById('quizResult').style.display = 'block';
+    const pct = Math.round((correct / currentQuiz.length) * 100);
+    document.getElementById('resultScore').textContent = pct + '%';
+    document.getElementById('resCorrect').textContent = correct;
+    document.getElementById('resWrong').textContent = currentQuiz.length - correct;
+    document.getElementById('resTotal').textContent = currentQuiz.length;
+
+    let label = '';
+    if (pct >= 90) label = '🏆 Excellent! You\'re quiz-ready!';
+    else if (pct >= 70) label = '✅ Good job! Review wrong answers.';
+    else if (pct >= 50) label = '📖 Keep studying — check Cheat Sheet!';
+    else label = '💪 Review lectures and try again!';
+    document.getElementById('resultLabel').textContent = label;
+  }, 1200);
+}
+
+function restartQuiz() {
+  document.getElementById('quizResult').style.display = 'none';
+  document.getElementById('quizStart').style.display = 'block';
+}
+
+function updateScoreBadge() {
+  if (totalAttempted > 0) {
+    document.getElementById('scoreBadge').textContent = `Score: ${totalCorrect} / ${totalAttempted}`;
+  }
+}
+
+// ========== TIMELINE ==========
+function renderTimeline() {
+  const container = document.getElementById('timelineContainer');
+  timelineData.forEach(item => {
+    const el = document.createElement('div');
+    el.className = 'timeline-item';
+    el.innerHTML = `
+      <div class="timeline-year">${item.year}</div>
+      <div class="timeline-title">${item.title}</div>
+      <div class="timeline-desc">${item.desc}</div>
+    `;
+    container.appendChild(el);
+  });
+}
+
+// ========== INIT ==========
+showCard();
+renderTimeline();
+</script>
+</body>
+</html>
